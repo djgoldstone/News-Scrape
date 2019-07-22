@@ -1,0 +1,9 @@
+<h1>Warriors Articles: </h1>
+{{#each data}}
+<div>
+    <h1>{{title}}</h1>
+    <p>{{summary}}</p>
+    <a href="{{link}}">Link to article</a>
+    <button data-_id="{{_id}}" id="bookmark-btn">Bookmark</button>
+</div>
+{{/each}}
