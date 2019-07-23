@@ -7,7 +7,7 @@ var cheerio = require("cheerio");
 
 var db = require("./models");
 
-var PORT = 3000;
+// var PORT = 3000;
 
 var app = express();
 
@@ -98,6 +98,10 @@ app.get("/scrape", function(req, res) {
       });
   })
 
-  app.listen(PORT, () => {
-      console.log("App is listening");
-  })
+  // app.listen(PORT, () => {
+  //     console.log("App is listening");
+  // })
+
+  app.listen(process.env.PORT || 3000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
