@@ -7,18 +7,26 @@ var ArticleSchema = new Schema({
         type: String,
         required: true
     },
-    summary: {
-        type: String,
-        // required: true
-    },
     link: {
         type: String,
         required: true
+    },
+    summary: {
+        type: String,
+        // required: true
     },
     saved: {
         type: Boolean,
         default: false
     },
+    status: {
+		type: String,
+		default: "Save Article"
+	},
+	created: {
+		type: Date,
+		default: Date.now
+	},
     comment: {
         type: Schema.Types.ObjectId,
         ref: "Comment"
