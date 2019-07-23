@@ -21,7 +21,12 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/warriorsScraper", { useNewUrlParser: true });
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/warriorsScraper";
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+
+// mongoose.connect("mongodb://localhost/warriorsScraper", { useNewUrlParser: true });
 //how to connec to mongoDB
 app.get("/", function(req, res) {
     db.Article.find({})
