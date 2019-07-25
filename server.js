@@ -51,14 +51,11 @@ app.get("/", function(req, res) {
     });
     // res.render("index");
 })
-// A GET route for scraping the echoJS website
+
 app.get("/scrape", function(req, res) {
-    // First, we grab the body of the html with axios
-    axios.get("https://www.goldenstateofmind.com/").then(function(response) {
-      // Then, we load that into cheerio and save it to $ for a shorthand selector
+    axios.get("https://www.goldenstateofmind.com/latest-news").then(function(response) {
       var $ = cheerio.load(response.data);
       console.log("scraping");
-      // Now, we grab every h2 within an article tag, and do the following:
       $(".c-entry-box--compact").each(function(i, element) {
           console.log("Inside loop");
         // Save an empty result object
@@ -69,7 +66,7 @@ app.get("/scrape", function(req, res) {
         result.title = title;
         result.summary = summary;
         result.link = url;
-          console.log(result);
+        console.log(result);
   
         // Create a new Article using the `result` object built from scraping
         db.Article.create(result)
@@ -86,17 +83,70 @@ app.get("/scrape", function(req, res) {
       // Send a message to the client
       res.send("Scrape Complete");
     });
+    // res.redirect("/");
   });
 
-  app.put("/api/articles/:id", function(req, res) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true})
-      .then(function(response) {
-          res.json(response);
-      }).catch(function(err) {
-        // If an error occurred, send it to the client
-        res.json(err);
+  app.get("/saved", function(req, res) {
+    db.Article.find({issaved: true}, null, {sort: {created: -1}}, function(err,data) {
+      if(data.length === 0) {
+        res.render("error", {message: "No saved articles to display"});
+      }
+      else {
+        res.render("saved", {saved: data});
+      }
+    });
+  });
+
+  app.get("/:id", function(req,res) {
+    db.Article.findById(req.params.id, function(err, data) {
+      res.json(data);
+    })
+  });
+
+  app.post("/save/:id", function(req, res) {
+    db.Article.findById(req.params.id, function(err, data) {
+      if (data.issaved) {
+        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
+          res.redirect("/");
+        });
+      }
+      else {
+        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: true, status: "Saved"}}, {new: true}, function(err, data) {
+          res.redirect("/saved");
+        });
+      }
+    });
+  });
+  
+  app.post("/comment/:id", function(req, res) {
+    var comment = new db.Comment(req.body);
+    comment.save(function(err, doc) {
+      if (err) throw err;
+      db.Article.findByIdAndUpdate(req.params.id, {$set: {"comment": doc._id}}, {new: true}, function(err, newdoc) {
+        if (err) throw err;
+        else {
+          res.send(newdoc);
+        }
       });
-  })
+    });
+  });
+  
+  app.get("/comment/:id", function(req, res) {
+    var id = req.params.id;
+    db.Article.findById(id).populate("comment").exec(function(err, data) {
+      res.send(data.comment);
+    })
+  });
+
+  // app.put("/api/articles/:id", function(req, res) {
+  //     return db.Article.findOneAndUpdate({ _id: req.params.id }, {saved: true})
+  //     .then(function(response) {
+  //         res.json(response);
+  //     }).catch(function(err) {
+  //       // If an error occurred, send it to the client
+  //       res.json(err);
+  //     });
+  // })
 
   // app.listen(PORT, () => {
   //     console.log("App is listening");
