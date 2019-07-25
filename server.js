@@ -106,12 +106,12 @@ app.get("/scrape", function(req, res) {
   app.post("/saved/:id", function(req, res) {
     db.Article.findById(req.params.id, function(err, data) {
       if (data.issaved) {
-        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
+        db.Article.findByIdAndUpdate({_id: req.params.id}, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
           res.redirect("/");
         });
       }
       else {
-        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: true, status: "Saved"}}, {new: true}, function(err, data) {
+        db.Article.findByIdAndUpdate({_id: req.params.id}, {$set: {issaved: true, status: "Saved"}}, {new: true}, function(err, data) {
           res.redirect("/saved");
         });
       }
