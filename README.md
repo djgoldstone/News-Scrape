@@ -1,17 +1,26 @@
 # News-Scrape
 
-A web app that lets users view and leave comments on the latest Golden State Warriors news from the Golden State of Mind blog. 
+A web app that lets users view, save, and leave comments on the latest Golden State Warriors news from the Golden State of Mind blog. The app captures the title/href and summary of articles from the GSOM blog. 
 
 [Visit the deployed page here!](https://news-scraper-dg.herokuapp.com/)
 ___
 
-### Design
+![Warriors Scraper](public/assets/images/screenshots/news-scraper-screenshot.png)
+___
 
+### Deployment
 
+use npm i to install:
 
-### Logic
+`cheerio`: scrapes html elements from https://www.goldenstateofmind.com/latest-news
 
+`mongoose`: manages nosql(MongoDB) database
 
+`express`: creates server-side routes and methods
+
+`express-handlebars`: "A Handlebars view engine for Express which doesn't suck"
+
+run application by using node.js
 
 ## Built With
 
@@ -31,13 +40,10 @@ ___
 * [Axios](https://github.com/axios/axios)
 
 
-![Graph]()
+![Graph](public/assets/images/screenshots/graph.png)
 ___
 
-![Warriors Scraper](public/assets/images/screenshots/burger-builder-screenshot.png)
-___
-
-## Authors
+## Author:
 
 * Derek Goldstone - [UC Berkeley Extension](https://www.linkedin.com/in/derek-goldstone-482884a3/)
 
