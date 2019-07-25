@@ -103,7 +103,7 @@ app.get("/scrape", function(req, res) {
     })
   });
 
-  app.post("/save/:id", function(req, res) {
+  app.post("/saved/:id", function(req, res) {
     db.Article.findById(req.params.id, function(err, data) {
       if (data.issaved) {
         db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
