@@ -20,7 +20,9 @@ use npm i to install:
 
 `express-handlebars`: "A Handlebars view engine for Express which doesn't suck"
 
-run application by using node.js
+`axios`: JavaScript library used to make HTTP/API requests
+
+run application by using node server.js in terminal
 
 ## Built With
 
