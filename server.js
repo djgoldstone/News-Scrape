@@ -81,13 +81,13 @@ app.get("/scrape", function(req, res) {
       });
   
       // Send a message to the client
-      res.send("Scrape Complete, please navigate back to the root route");
+      res.send("Scrape Complete, please navigate back to the root.");
     });
     // res.redirect("/");
   });
 
   app.get("/saved", function(req, res) {
-    db.Article.find({saved: true}, null, {sort: {created: -1}}, function(err,data) {
+    db.Article.find({issaved: true}, null, {sort: {created: -1}}, function(err,data) {
       if(data.length === 0) {
         res.render("error", {message: "No saved articles to display"});
       }
@@ -106,12 +106,12 @@ app.get("/scrape", function(req, res) {
   app.post("/save/:id", function(req, res) {
     db.Article.findById(req.params.id, function(err, data) {
       if (data.issaved) {
-        db.Article.findByIdAndUpdate(req.params.id, {$set: {saved: false, status: "Save Article"}}, {new: true}, function(err, data) {
+        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: false, status: "Save Article"}}, {new: true}, function(err, data) {
           res.redirect("/");
         });
       }
       else {
-        db.Article.findByIdAndUpdate(req.params.id, {$set: {saved: true, status: "Saved"}}, {new: true}, function(err, data) {
+        db.Article.findByIdAndUpdate(req.params.id, {$set: {issaved: true, status: "Saved"}}, {new: true}, function(err, data) {
           res.redirect("/saved");
         });
       }
