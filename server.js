@@ -53,7 +53,7 @@ app.get("/", function(req, res) {
 })
 
 app.get("/scrape", function(req, res) {
-    axios.get("https://www.goldenstateofmind.com/latest-news").then(function(response) {
+    axios.get("https://www.goldenstateofmind.com/").then(function(response) {
       var $ = cheerio.load(response.data);
       console.log("scraping");
       $(".c-entry-box--compact").each(function(i, element) {
