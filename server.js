@@ -92,7 +92,7 @@ app.get("/scrape", function(req, res) {
         res.render("error", {message: "No saved articles to display"});
       }
       else {
-        res.render("saved", {saved: data});
+        res.render("savedArticles", {saved: data});
       }
     });
   });
